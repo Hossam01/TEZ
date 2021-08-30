@@ -23,7 +23,6 @@ public class DetailViewModel  extends ViewModel {
     public DetailViewModel(Repository repository) {
 
         this.repository = repository;
-        getPokemons();
 
     }
 
@@ -32,8 +31,8 @@ public class DetailViewModel  extends ViewModel {
         return pokemonList;
     }
 
-    public void getPokemons(){
-        repository.getMainData()
+    public void getPokemons(String cookie){
+        repository.getMainData(cookie)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

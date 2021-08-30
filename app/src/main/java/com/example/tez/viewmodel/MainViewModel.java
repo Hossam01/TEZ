@@ -6,8 +6,8 @@ import android.util.Log;
 import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import retrofit2.Response;
 
-import com.example.tez.models.Response;
 import com.example.tez.models.ResponseDay;
 import com.example.tez.repository.Repository;
 
@@ -19,7 +19,7 @@ public class MainViewModel extends ViewModel {
     private static final String TAG = "MainViewModel";
 
     private Repository repository;
-    private MutableLiveData<Response> pokemonList = new MutableLiveData<>();
+    private MutableLiveData<Response<com.example.tez.models.Response>> pokemonList = new MutableLiveData<>();
    public MutableLiveData<String> ErrorpokemonList = new MutableLiveData<>();
 
     @ViewModelInject
@@ -27,30 +27,19 @@ public class MainViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public MutableLiveData<Response> getPokemonList() {
+    public MutableLiveData<Response<com.example.tez.models.Response>> getPokemonList() {
         return pokemonList;
     }
-    private MutableLiveData<ResponseDay> pokemonList2 = new MutableLiveData<>();
 
-    public void getPokemons2(){
-        repository.getMainData()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
 
-                .subscribe(
-                        result -> pokemonList2.setValue(result),
-                        error-> Log.e(TAG,error.getMessage()));
-
-    }
 
     public void getPokemons(String name,String pass){
-        String cookie ; ;
+        String cookie ;
 
         repository.getData(name, pass)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-
                         result -> pokemonList.setValue(result)
                         ,
                         error-> ErrorpokemonList.setValue(error.getMessage().toString()));

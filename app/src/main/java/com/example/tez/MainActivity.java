@@ -16,6 +16,8 @@ import com.example.tez.viewmodel.MainViewModel;
 
 import org.simpleframework.xml.Element;
 
+import java.util.List;
+
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
@@ -48,13 +50,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getPokemonList().observe(this, new Observer<Response>() {
+        viewModel.getPokemonList().observe(this, new Observer<retrofit2.Response<Response>>() {
             @Override
-            public void onChanged(Response user) {
-                if (user.getAuth().equals("true")) {
+            public void onChanged(retrofit2.Response<Response> user) {
+
+                if (user.body().getAuth().equals("true")) {
                     Intent intent = new Intent(MainActivity.this, DataActivity.class);
+                    Bundle bundle=new Bundle();
+                    List<String> Cookielist = user.headers().values("Set-Cookie");
+                    bundle.putString("cookie",(Cookielist .get(0).split(";"))[0]);
+                    intent.putExtras(bundle);
                     startActivity(intent);
-                    viewModel.getPokemons2();
 
                 }
             }

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -34,6 +36,10 @@ public class DataActivity extends AppCompatActivity {
         binding = ActivityDataBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(DetailViewModel.class);
+        Intent in = getIntent();
+        Bundle b = in.getExtras();
+        Log.e("te",b.getString("cookie"));
+        viewModel.getPokemons(b.getString("cookie"));
         initRecyclerView();
         viewModel.getPokemonList().observe(this, new Observer<ResponseDay>() {
             @Override
